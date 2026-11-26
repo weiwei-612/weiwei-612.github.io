@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 发布前，请替换姓名、简介以及页面中的【待填写】内容。 -->
+  <title>你的姓名 · 学术主页</title>
+  <meta name="description" content="博士研究生个人主页：研究方向、论文、开源项目与教育经历。">
+  <meta name="theme-color" content="#ffffff">
+  <style>
+    :root { color-scheme: light; --ink:#172333; --muted:#617082; --blue:#215bc4; --line:#e2e8f0; --soft:#f4f7fb; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; scroll-padding-top:100px; }
+    body { margin:0; background:#fff; color:var(--ink); font:16px/1.8 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; }
+    a { color:var(--blue); text-decoration:none; text-underline-offset:4px; }
+    a:hover { text-decoration:underline; }
+    button { font:inherit; cursor:pointer; }
+    a:focus-visible,button:focus-visible { outline:3px solid #84aaff; outline-offset:5px; }
+    .skip { position:fixed; top:-100px; left:16px; padding:8px 14px; background:var(--ink); color:white; z-index:20; }
+    .skip:focus { top:12px; }
+    .wrap { max-width:1080px; padding:0 40px; margin:0 auto; }
+    .topbar { position:sticky; top:0; z-index:10; border-bottom:1px solid var(--line); background:rgba(255,255,255,.97); }
+    .nav { min-height:76px; display:flex; align-items:center; justify-content:space-between; gap:24px; }
+    .brand { color:var(--ink); font-weight:700; letter-spacing:.02em; white-space:nowrap; }
+    .navlinks { display:flex; align-items:center; gap:24px; flex-wrap:wrap; }
+    .navlinks a { color:var(--muted); font-size:14px; }
+    .navlinks a:hover { color:var(--blue); }
+    .hero { padding:76px 0 56px; display:grid; grid-template-columns:minmax(0,1fr) 260px; gap:68px; border-bottom:1px solid var(--line); }
+    .eyebrow { margin:0 0 14px; color:var(--blue); font-size:14px; font-weight:650; letter-spacing:.12em; }
+    h1 { margin:0; font-size:clamp(36px,5vw,52px); line-height:1.25; letter-spacing:-.04em; font-weight:750; }
+    .en-name { display:block; margin-top:14px; color:var(--muted); font-size:24px; font-weight:400; letter-spacing:0; }
+    .affiliation { margin:25px 0 12px; font-weight:600; }
+    .intro { margin:0; max-width:610px; color:var(--muted); }
+    .hero-links { display:flex; flex-wrap:wrap; gap:12px; margin-top:25px; }
+    .button { display:inline-flex; align-items:center; justify-content:center; padding:8px 18px; border:1px solid var(--line); border-radius:6px; background:white; color:var(--ink); font-size:14px; font-weight:600; }
+    .button:hover { background:var(--soft); text-decoration:none; }
+    .button.primary { background:var(--blue); border-color:var(--blue); color:white; }
+    .button.primary:hover { background:#194b9f; }
+    .profile { align-self:center; padding-left:28px; border-left:2px solid #d9e5fa; }
+    .profile-title { font-size:14px; font-weight:650; color:var(--ink); margin:0 0 12px; }
+    .profile dl { margin:0; }
+    .profile dt { font-size:14px; color:var(--muted); margin-top:13px; }
+    .profile dd { margin:2px 0 0; font-size:14px; overflow-wrap:anywhere; }
+    .placeholder { color:#687587; }
+    main { padding:8px 0 48px; }
+    section { padding:35px 0 32px; border-bottom:1px solid var(--line); }
+    section:last-child { border-bottom:0; }
+    .section-heading { display:flex; align-items:baseline; gap:13px; margin-bottom:20px; }
+    h2 { font-size:24px; letter-spacing:-.03em; line-height:1.4; margin:0; }
+    .section-heading span { color:var(--muted); font-size:14px; }
+    p { margin:0 0 12px; }
+    .research-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:30px; }
+    h3 { margin:0 0 8px; font-size:17px; font-weight:650; line-height:1.6; }
+    .research-grid p { margin:0; font-size:15px; color:var(--muted); }
+    .research-mark { height:3px; width:30px; background:var(--blue); margin:3px 0 17px; }
+    .entry { display:grid; grid-template-columns:140px minmax(0,1fr); gap:20px; padding:18px 0; }
+    .entry + .entry { border-top:1px solid var(--line); }
+    .entry-meta { color:var(--muted); font-size:14px; padding-top:3px; }
+    .entry-body p { color:var(--muted); margin:3px 0 0; }
+    .entry-body .authors { font-size:15px; }
+    .entry-links { margin-top:9px; display:flex; gap:18px; font-size:14px; flex-wrap:wrap; }
+    .tag { display:inline-block; border:1px solid #dce5f3; border-radius:4px; color:#3c5b88; padding:1px 8px; margin:4px 5px 0 0; font-size:13px; }
+    .education { display:flex; align-items:flex-start; justify-content:space-between; gap:24px; }
+    .education p { color:var(--muted); margin:3px 0 0; }
+    .education time { color:var(--muted); white-space:nowrap; font-size:14px; padding-top:3px; }
+    .note { margin-top:15px; font-size:14px; color:var(--muted); }
+    footer { color:var(--muted); border-top:1px solid var(--line); padding:22px 0 30px; font-size:13px; }
+    .footer-inner { display:flex; justify-content:space-between; gap:20px; }
+    @media(max-width:760px) {
+      .wrap { padding:0 24px; }
+      .nav { min-height:70px; gap:14px; padding-top:14px; padding-bottom:14px; align-items:flex-start; flex-direction:column; }
+      .navlinks { gap:18px; }
+      .hero { padding:45px 0 36px; grid-template-columns:minmax(0,1fr); gap:30px; }
+      .profile { padding-left:20px; }
+      .profile dl { display:grid; grid-template-columns:1fr 1fr; gap:0 20px; }
+      .profile dt { margin-top:6px; }
+      .research-grid { grid-template-columns:1fr; gap:24px; }
+      .research-mark { margin-bottom:10px; }
+      .entry { grid-template-columns:1fr; gap:6px; }
+      .education { flex-direction:column; gap:7px; }
+      .footer-inner { flex-direction:column; gap:3px; }
+      section { padding:29px 0; }
+      .section-heading { gap:9px; flex-wrap:wrap; }
+    }
+    @media(prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } }
+    @media print {
+      @page { size:A4; margin:16mm; }
+      body { font-size:10.5pt; line-height:1.6; color:#111; }
+      .wrap { max-width:none; padding:0; }
+      .topbar,.hero-links,footer,.skip,.note { display:none !important; }
+      .hero { padding:0 0 18px; gap:30px; grid-template-columns:minmax(0,1fr) 185px; }
+      h1 { font-size:28pt; }
+      .en-name { font-size:15pt; margin-top:7px; }
+      .eyebrow { font-size:9pt; margin-bottom:8px; }
+      .affiliation { margin-top:14px; }
+      section { padding:18px 0; }
+      h2 { font-size:15pt; }
+      h3 { font-size:11pt; }
+      .section-heading { margin-bottom:12px; }
+      .section-heading span,.profile dt,.profile dd,.entry-meta,.research-grid p,.entry-body .authors,.education time { font-size:9pt; }
+      .entry { grid-template-columns:105px minmax(0,1fr); padding:11px 0; }
+      .entry,.education,.research-grid > div { break-inside:avoid; }
+      a { color:#111; }
+      .tag { font-size:8pt; }
+      main { padding-bottom:0; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">跳至主要内容</a>
+  <header class="topbar">
+    <nav class="wrap nav" aria-label="主导航">
+      <a class="brand" href="#home">你的姓名</a>
+      <div class="navlinks">
+        <a href="#research">研究方向</a>
+        <a href="#publications">论文</a>
+        <a href="#projects">开源项目</a>
+        <a href="#education">教育经历</a>
+      </div>
+    </nav>
+  </header>
+  <div class="wrap" id="home">
+    <div class="hero">
+      <div>
+        <p class="eyebrow">PH.D. STUDENT · AI SYSTEMS</p>
+        <!-- TODO：替换中文姓名和英文姓名；同时修改 title 和导航栏中的姓名。 -->
+        <h1>你的姓名<span class="en-name">Your Name</span></h1>
+        <!-- 以下学校与研究简介依据已有背景拟定，请在发布前核实。 -->
+        <p class="affiliation">天津大学 · 博士研究生</p>
+        <p class="intro">我关注大模型推理系统的效率与可扩展性，研究兴趣包括推理加速、混合注意力状态管理，以及面向 GPU / NPU 的高性能算子。</p>
+        <div class="hero-links">
+          <a class="button primary" href="#publications">查看研究成果</a>
+          <button class="button" type="button" id="print-cv">打印 / 保存为 PDF</button>
+        </div>
+      </div>
+      <aside class="profile" aria-label="联系方式">
+        <p class="profile-title">联系方式 / CONTACT</p>
+        <dl>
+          <div><dt>Email</dt><dd class="placeholder">【待填写：公开邮箱】</dd></div>
+          <div><dt>GitHub</dt><dd><a href="https://github.com/weiwei-612">weiwei-612</a></dd></div>
+          <div><dt>Google Scholar</dt><dd class="placeholder">【待填写：学术主页链接】</dd></div>
+        </dl>
+        <!-- 填好后可将 dd 内容改为链接，如 <a href="mailto:你的邮箱">你的邮箱</a>。 -->
+      </aside>
+    </div>
+    <main id="main">
+      <section id="research" aria-labelledby="research-title">
+        <div class="section-heading"><h2 id="research-title">研究方向</h2><span>Research interests</span></div>
+        <div class="research-grid">
+          <div><div class="research-mark" aria-hidden="true"></div><h3>大模型推理系统</h3><p>面向大模型服务的推理加速、前缀复用与缓存管理。</p></div>
+          <div><div class="research-mark" aria-hidden="true"></div><h3>混合注意力</h3><p>全注意力与线性注意力模型中的状态存储、恢复及计算优化。</p></div>
+          <div><div class="research-mark" aria-hidden="true"></div><h3>异构计算与高性能算子</h3><p>结合 GPU / NPU 架构特性的算子实现、融合与性能优化。</p></div>
+        </div>
+      </section>
+      <section id="publications" aria-labelledby="publications-title">
+        <div class="section-heading"><h2 id="publications-title">论文</h2><span>Publications</span></div>
+        <!-- TODO：替换以下示例条目。复制整段 article 可增加论文。未公开论文请自行决定是否展示。 -->
+        <article class="entry">
+          <div class="entry-meta">【年份 · 会议 / 期刊】</div>
+          <div class="entry-body">
+            <h3>【待填写：论文标题】</h3>
+            <p class="authors">【待填写：作者列表，并将自己的姓名加粗】</p>
+            <p>【待填写：用一句话介绍论文解决的问题与主要方法】</p>
+            <!-- 有公开链接后再取消注释，并替换 URL。
+            <div class="entry-links"><a href="https://你的论文链接">论文</a><a href="https://你的代码链接">代码</a></div>
+            -->
+          </div>
+        </article>
+      </section>
+      <section id="projects" aria-labelledby="projects-title">
+        <div class="section-heading"><h2 id="projects-title">开源项目</h2><span>Open source</span></div>
+        <!-- 以下项目来自已提供的仓库信息。请补充你希望公开的具体贡献。 -->
+        <article class="entry">
+          <div class="entry-meta">线性注意力 · 昇腾 NPU</div>
+          <div class="entry-body">
+            <h3><a href="https://github.com/flashserve/flash-linear-attention-npu" target="_blank" rel="noopener noreferrer">flash-linear-attention-npu</a></h3>
+            <p>面向昇腾 NPU 的高性能线性注意力算子库。</p>
+            <p class="placeholder">【待填写：你负责的模块、实现内容与可公开的成果】</p>
+            <div><span class="tag">Linear Attention</span><span class="tag">AI Infrastructure</span><span class="tag">Ascend NPU</span></div>
+          </div>
+        </article>
+      </section>
+      <section id="education" aria-labelledby="education-title">
+        <div class="section-heading"><h2 id="education-title">教育经历</h2><span>Education</span></div>
+        <div class="education">
+          <div><h3>天津大学</h3><p>博士研究生 · 【待填写：学院 / 专业】</p><p>【待填写：导师与实验室，可选】</p></div>
+          <time>【入学年份】—【预计毕业年份】</time>
+        </div>
+        <!-- TODO：复制 education 块可添加硕士、本科经历。 -->
+      </section>
+    </main>
+  </div>
+  <footer><div class="wrap footer-inner"><span>© <span id="year">2026</span> 你的姓名</span><span>Academic homepage</span></div></footer>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    document.getElementById('print-cv').addEventListener('click', function () { window.print(); });
+  </script>
+</body>
+</html>
